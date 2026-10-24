@@ -19,7 +19,7 @@ An administrator adds canonical UUID strings to `hiddenUuids`. Do not put names,
 
 ## Behavior
 
-Hidden players are excluded from entity tracking, other players' Tab/player-info packets (including initial login and latency updates), public join/leave announcements, modern status player count/sample, legacy ping, Query player count/names, player-issued vanilla `/list` (including `/list uuids`), and ordinary online-name suggestions. A hidden player can still receive their own player-info state.
+Hidden players are excluded from entity tracking, other players' Tab/player-info packets (including initial login and latency updates), public join/leave, advancement and death announcements, modern status player count/sample, legacy ping, Query player count/names, player-issued vanilla `/list` (including `/list uuids`), and ordinary online-name suggestions. A hidden player can still receive their own player-info state.
 
 With `observerMode: true` (default), hidden players use spectator mode while connected. Their original current/previous modes are preserved in player data; saved vanilla game-mode fields retain their original values, so a subsequent login after removing the UUID, disabling observer mode, or uninstalling the mod does not strand them in spectator. Mode changes away from spectator are refused while configured hidden. This prevents ordinary block breaking, combat, pickup, pressure plates and mob targeting; it is not a world-simulation pause. Chunk loading, server ticks and other indirect effects continue.
 
@@ -30,7 +30,7 @@ With `observerMode: false`, presence hiding remains enabled but gameplay interac
 - Authentication, bans, whitelist, connection logs, server-console join/leave audit, real server slot accounting, saving and administrative APIs are untouched.
 - Console/RCON `/list` and administrative selectors retain the real player set. This is intentionally not hidden from administrators.
 - Commands/chat can reveal the sender. Do not use this as an anonymity or anti-detection system.
-- Third-party Discord bridges, maps, team/scoreboard UIs, quest mods and custom player-list commands can read real server state independently. Compatibility must be separately verified. Do not assume a generic mod is covered because vanilla Tab is hidden.
+- Third-party Discord bridges, maps, team/scoreboard UIs, quest mods and custom player-list commands can read real server state independently. Compatibility must be separately verified. The inspected TFG instance has no active Minecraft Discord bridge; a retained bridge config alone is not evidence of an active integration. Do not assume a generic mod is covered because vanilla Tab is hidden.
 - Existing scoreboard/team/history records are not erased. Other mods can send their own packets. An incompatible required mixin causes startup failure rather than silently dropping its hook.
 - This mod changes no login/auth configuration and grants no operator permission.
 

@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.uppermoon0.simplyvanish.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "simplyvanish.refmap.json",
+  "mixins": [
+    "PlayerInfoAccessor",
+    "GameModeAccessor",
+    "TrackedEntityMixin",
+    "PlayerListMixin",
+    "ServerPlayerMixin",
+    "GamePacketListenerMixin",
+    "MinecraftServerStatusMixin",
+    "LegacyQueryHandlerMixin",
+    "QueryThreadGs4Mixin",
+    "ListPlayersCommandMixin",
+    "CommandSourceStackMixin",
+    "PlayerAdvancementsMixin",
+    "ServerPlayerDeathMixin",
+    "PlayerListObserverMountMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
