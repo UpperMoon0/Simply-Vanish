@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish;
+package io.github.uppermoon0.vanishguard;
 
-import io.github.uppermoon0.simplyvanish.mixin.PlayerInfoAccessor;
+import io.github.uppermoon0.vanishguard.mixin.PlayerInfoAccessor;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -17,7 +17,7 @@ public final class PacketVisibility {
             if (entries.size() == info.entries().size()) return packet;
             if (entries.isEmpty()) return null;
             var copy = new ClientboundPlayerInfoUpdatePacket(info.actions(), List.<ServerPlayer>of());
-            ((PlayerInfoAccessor)copy).simplyvanish$setEntries(entries);
+            ((PlayerInfoAccessor)copy).vanishguard$setEntries(entries);
             return copy;
         }
         if (packet instanceof ClientboundPlayerInfoRemovePacket removal) {
@@ -54,7 +54,7 @@ public final class PacketVisibility {
         return (Packet<ClientGamePacketListener>)packet;
     }
     private static boolean visible(UUID uuid, ServerPlayer viewer) {
-        return uuid.equals(viewer.getUUID()) || !SimplyVanish.hidden(uuid);
+        return uuid.equals(viewer.getUUID()) || !VanishGuard.hidden(uuid);
     }
     private static boolean visibleEntity(int id, ServerPlayer viewer) {
         for (ServerPlayer player : viewer.server.getPlayerList().getPlayers()) {

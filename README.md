@@ -1,10 +1,10 @@
-# Simply Vanish
+# VanishGuard
 
 Server-only, administrator-configured presence hiding for **Minecraft 1.20.1 / Forge 47.4.13**, version **0.1.0**. No client-side mod or custom network channel is required. This is not an authentication plugin or an anti-audit tool.
 
 ## Configuration
 
-On first startup, the mod creates `config/simply-vanish.json` only if it is absent:
+On first startup, the mod creates `config/vanishguard.json` only if it is absent:
 
 ```json
 {
@@ -42,6 +42,6 @@ Use Java 17:
 ./gradlew --no-daemon test build
 ```
 
-Artifact: `build/libs/simply-vanish-1.20.1-0.1.0.jar` (reobfuscated for production Forge). Runtime dependencies: Minecraft 1.20.1 and Forge 47.4.13 only. Install only on the dedicated server, not clients. Never replace a running server's files or restart it without the administrator's maintenance approval.
+Artifact: `build/libs/vanishguard-1.20.1-0.1.0.jar` (reobfuscated for production Forge). Runtime dependencies: Minecraft 1.20.1 and Forge 47.4.13 only. Install only on the dedicated server, not clients. Never replace a running server's files or restart it without the administrator's maintenance approval.
 
 See [verification](docs/verification.md) for measured results and remaining release gates. The source is MIT licensed; the Gradle wrapper retains its upstream license notices. No decompiled Minecraft sources are distributed here.

@@ -3,9 +3,9 @@ plugins {
     id 'net.minecraftforge.gradle' version '6.0.54'
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
 }
-group = 'io.github.uppermoon0.simplyvanish'
+group = 'io.github.uppermoon0.vanishguard'
 version = '0.1.0'
-base { archivesName = 'simply-vanish-1.20.1' }
+base { archivesName = 'vanishguard-1.20.1' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 minecraft {
     mappings channel: 'official', version: '1.20.1'
@@ -14,7 +14,7 @@ minecraft {
         server {
             workingDirectory project.file('run')
             args '--nogui'
-            mods { simplyvanish { source sourceSets.main } }
+            mods { vanishguard { source sourceSets.main } }
         }
     }
 }
@@ -24,7 +24,27 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
-mixin { add sourceSets.main, 'simplyvanish.refmap.json'; config 'simplyvanish.mixins.json' }
+mixin { add sourceSets.main, 'vanishguard.refmap.json'; config 'vanishguard.mixins.json' }
 test { useJUnitPlatform() }
-jar { manifest { attributes 'MixinConfigs': 'simplyvanish.mixins.json' }; finalizedBy 'reobfJar' }
+jar { manifest { attributes 'MixinConfigs': 'vanishguard.mixins.json' }; finalizedBy 'reobfJar' }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+// Separate test-only mod. Never included in build/libs or production jar contents.
+sourceSets {
+    fixture {
+        compileClasspath += sourceSets.main.compileClasspath
+    }
+}
+tasks.register('fixtureJar', Jar) {
+    from sourceSets.fixture.output
+    archiveFileName = 'vanishguard-integration-fixture.jar'
+    destinationDirectory = layout.buildDirectory.dir('fixture')
+}
+reobf { fixtureJar {} }
+tasks.named('fixtureJar').configure { finalizedBy 'reobfFixtureJar' }
+tasks.named('fixtureJar').configure {
+    // MixinGradle applies its manifest/refmap hook to every Jar by default.
+    // The fixture must not register the production mixin config a second time.
+    exclude 'vanishguard.refmap.json'
+    doFirst { manifest.attributes.remove('MixinConfigs') }
+}

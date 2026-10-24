@@ -1,4 +1,4 @@
-package io.github.uppermoon0.simplyvanish;
+package io.github.uppermoon0.vanishguard;
 
 import com.google.gson.*;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public record VanishConfig(Set<UUID> hiddenUuids, boolean observerMode) {
             }
             return parse(Files.readString(path));
         } catch (IOException | RuntimeException e) {
-            throw new IllegalStateException("Cannot safely load Simply Vanish config: " + path + ". Fix the file before restarting.", e);
+            throw new IllegalStateException("Cannot safely load VanishGuard config: " + path + ". Fix the file before restarting.", e);
         }
     }
 }

@@ -1,2 +1,2 @@
 pluginManagement { repositories { gradlePluginPortal(); maven { url = 'https://maven.minecraftforge.net/' }; maven { url = 'https://repo.spongepowered.org/repository/maven-public/' } } }
-rootProject.name = 'simply-vanish'
+rootProject.name = 'vanishguard'

@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.SimplyVanish;
+import io.github.uppermoon0.vanishguard.VanishGuard;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,8 +19,8 @@ public abstract class PlayerAdvancementsMixin {
             method = "award(Lnet/minecraft/advancements/Advancement;Ljava/lang/String;)Z",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V"),
             require = 1, expect = 1, allow = 1)
-    private void simplyvanish$privateAdvancementAnnouncement(PlayerList list, Component message, boolean overlay) {
+    private void vanishguard$privateAdvancementAnnouncement(PlayerList list, Component message, boolean overlay) {
         list.broadcastSystemMessage(message,
-                viewer -> SimplyVanish.hidden(this.player) ? null : message, overlay);
+                viewer -> VanishGuard.hidden(this.player) ? null : message, overlay);
     }
 }

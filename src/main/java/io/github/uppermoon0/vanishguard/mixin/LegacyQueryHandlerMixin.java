@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.PublicPlayerSnapshot;
+import io.github.uppermoon0.vanishguard.PublicPlayerSnapshot;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.LegacyQueryHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ public abstract class LegacyQueryHandlerMixin {
             remap = false, // Netty's override is not obfuscated; its Minecraft call is.
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;getPlayerCount()I", remap = true),
             require = 3, expect = 3, allow = 3)
-    private int simplyvanish$publicLegacyCount(MinecraftServer server) {
-        return ((PublicPlayerSnapshot) server).simplyvanish$getPublicPlayerCount();
+    private int vanishguard$publicLegacyCount(MinecraftServer server) {
+        return ((PublicPlayerSnapshot) server).vanishguard$getPublicPlayerCount();
     }
 }

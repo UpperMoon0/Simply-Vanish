@@ -1,4 +1,4 @@
-package io.github.uppermoon0.simplyvanish;
+package io.github.uppermoon0.vanishguard;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -86,7 +86,7 @@ class VanishConfigTest {
 
     @Test
     void explicitObserverFlagIsPartOfImmutableStartupSnapshot() throws IOException {
-        Path path = Files.writeString(temporaryDirectory.resolve("simply-vanish.json"),
+        Path path = Files.writeString(temporaryDirectory.resolve("vanishguard.json"),
             "{\"hiddenUuids\":[],\"observerMode\":false}");
         VanishConfig startup = VanishConfig.load(path);
         Files.writeString(path, "{\"hiddenUuids\":[],\"observerMode\":true}");
@@ -203,7 +203,7 @@ class VanishConfigTest {
 
     @Test
     void createsEmptyDefaultOnlyWhenPathDoesNotExistIncludingParentDirectories() throws IOException {
-        Path path = temporaryDirectory.resolve("config/nested/simply-vanish.json");
+        Path path = temporaryDirectory.resolve("config/nested/vanishguard.json");
         assertFalse(Files.exists(path));
         VanishConfig configuration = VanishConfig.load(path);
         assertEquals(Set.of(), configuration.hiddenUuids());
@@ -215,7 +215,7 @@ class VanishConfigTest {
 
     @Test
     void reloadOfExistingDefaultDoesNotRewriteFile() throws IOException {
-        Path path = temporaryDirectory.resolve("simply-vanish.json");
+        Path path = temporaryDirectory.resolve("vanishguard.json");
         VanishConfig.load(path);
         byte[] before = Files.readAllBytes(path);
         FileTime marker = FileTime.fromMillis(1_234_567_890_000L);
@@ -227,7 +227,7 @@ class VanishConfigTest {
 
     @Test
     void loadsExistingConfigurationWithoutChangingBytesOrModificationTime() throws IOException {
-        Path path = temporaryDirectory.resolve("simply-vanish.json");
+        Path path = temporaryDirectory.resolve("vanishguard.json");
         String content = " \n{ \"hiddenUuids\": [ \"" + FIRST_TEXT.toUpperCase(java.util.Locale.ROOT) + "\" ] }\n";
         Files.writeString(path, content);
         FileTime marker = FileTime.fromMillis(1_234_567_890_000L);
@@ -240,7 +240,7 @@ class VanishConfigTest {
     @ParameterizedTest(name = "existing invalid file is not replaced: {0}")
     @ValueSource(strings = {"", " ", "{}", "{\"hiddenUuids\":null}", "{\"hiddenUuids\":[\"1-1-1-1-1\"]}", "broken JSON"})
     void invalidExistingFileAbortsStartupAndIsNeverOverwritten(String content) throws IOException {
-        Path path = temporaryDirectory.resolve("simply-vanish.json");
+        Path path = temporaryDirectory.resolve("vanishguard.json");
         Files.writeString(path, content);
         FileTime marker = FileTime.fromMillis(1_234_567_890_000L);
         Files.setLastModifiedTime(path, marker);
@@ -253,7 +253,7 @@ class VanishConfigTest {
 
     @Test
     void malformedUtf8FileAbortsStartupWithoutOverwritingBytes() throws IOException {
-        Path path = temporaryDirectory.resolve("simply-vanish.json");
+        Path path = temporaryDirectory.resolve("vanishguard.json");
         byte[] malformedUtf8 = {(byte) 0xc3, (byte) 0x28};
         Files.write(path, malformedUtf8);
         assertThrows(IllegalStateException.class, () -> VanishConfig.load(path));
@@ -262,7 +262,7 @@ class VanishConfigTest {
 
     @Test
     void directoryInPlaceOfConfigAbortsStartupAndPreservesItsContents() throws IOException {
-        Path path = Files.createDirectory(temporaryDirectory.resolve("simply-vanish.json"));
+        Path path = Files.createDirectory(temporaryDirectory.resolve("vanishguard.json"));
         Path sentinel = Files.writeString(path.resolve("sentinel.txt"), "do not overwrite");
         assertThrows(IllegalStateException.class, () -> VanishConfig.load(path));
         assertTrue(Files.isDirectory(path));
@@ -272,14 +272,14 @@ class VanishConfigTest {
     @Test
     void parentThatIsAFileAbortsStartupWithoutReplacingParent() throws IOException {
         Path parent = Files.writeString(temporaryDirectory.resolve("config"), "sentinel");
-        assertThrows(IllegalStateException.class, () -> VanishConfig.load(parent.resolve("simply-vanish.json")));
+        assertThrows(IllegalStateException.class, () -> VanishConfig.load(parent.resolve("vanishguard.json")));
         assertEquals("sentinel", Files.readString(parent));
     }
 
     @Test
     void unreadableExistingFileAbortsStartupRatherThanFallingBackToEmpty() throws IOException {
         assumeTrue(Files.getFileStore(temporaryDirectory).supportsFileAttributeView("posix"));
-        Path path = Files.writeString(temporaryDirectory.resolve("simply-vanish.json"), json(FIRST_TEXT));
+        Path path = Files.writeString(temporaryDirectory.resolve("vanishguard.json"), json(FIRST_TEXT));
         Set<PosixFilePermission> originalPermissions = Files.getPosixFilePermissions(path);
         try {
             Files.setPosixFilePermissions(path, Set.of());
@@ -295,7 +295,7 @@ class VanishConfigTest {
     void missingConfigInUnwritableDirectoryAbortsRatherThanReturningEmpty() throws IOException {
         assumeTrue(Files.getFileStore(temporaryDirectory).supportsFileAttributeView("posix"));
         Path parent = Files.createDirectory(temporaryDirectory.resolve("config"));
-        Path path = parent.resolve("simply-vanish.json");
+        Path path = parent.resolve("vanishguard.json");
         Set<PosixFilePermission> originalPermissions = Files.getPosixFilePermissions(parent);
         try {
             Files.setPosixFilePermissions(parent, Set.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE));
@@ -344,7 +344,7 @@ class VanishConfigTest {
 
     @Test
     void loadedConfigurationIsStartupSnapshotAndDoesNotReloadWhenFileChanges() throws IOException {
-        Path path = Files.writeString(temporaryDirectory.resolve("simply-vanish.json"), json(FIRST_TEXT));
+        Path path = Files.writeString(temporaryDirectory.resolve("vanishguard.json"), json(FIRST_TEXT));
         VanishConfig startup = VanishConfig.load(path);
         Files.writeString(path, json(SECOND_TEXT));
         assertEquals(Set.of(FIRST), startup.hiddenUuids());

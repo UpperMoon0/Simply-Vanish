@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.SimplyVanish;
+import io.github.uppermoon0.vanishguard.VanishGuard;
 import java.util.Collection;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
@@ -24,9 +24,9 @@ public abstract class CommandSourceStackMixin {
             method = "getOnlinePlayerNames()Ljava/util/Collection;",
             at = @At("HEAD"), cancellable = true,
             require = 1, expect = 1, allow = 1)
-    private void simplyvanish$playerFacingSuggestions(CallbackInfoReturnable<Collection<String>> callback) {
+    private void vanishguard$playerFacingSuggestions(CallbackInfoReturnable<Collection<String>> callback) {
         if (this.getEntity() instanceof ServerPlayer) {
-            callback.setReturnValue(SimplyVanish.visible(this.getServer().getPlayerList().getPlayers())
+            callback.setReturnValue(VanishGuard.visible(this.getServer().getPlayerList().getPlayers())
                     .stream().map(player -> player.getGameProfile().getName()).toList());
         }
     }

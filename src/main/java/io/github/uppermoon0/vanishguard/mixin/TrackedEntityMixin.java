@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.SimplyVanish;
+import io.github.uppermoon0.vanishguard.VanishGuard;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.*;
@@ -11,7 +11,7 @@ public abstract class TrackedEntityMixin {
     @Shadow @Final private Entity entity;
     @Shadow public abstract void removePlayer(ServerPlayer player);
     @Inject(method = "updatePlayer", at = @At("HEAD"), cancellable = true)
-    private void simplyvanish$denyTracking(ServerPlayer viewer, CallbackInfo ci) {
-        if (SimplyVanish.hidden(entity)) { removePlayer(viewer); ci.cancel(); }
+    private void vanishguard$denyTracking(ServerPlayer viewer, CallbackInfo ci) {
+        if (VanishGuard.hidden(entity)) { removePlayer(viewer); ci.cancel(); }
     }
 }

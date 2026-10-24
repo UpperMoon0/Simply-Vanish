@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.SimplyVanish;
+import io.github.uppermoon0.vanishguard.VanishGuard;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -20,8 +20,8 @@ public abstract class PlayerListObserverMountMixin {
     @Inject(
             method = "placeNewPlayer(Lnet/minecraft/network/Connection;Lnet/minecraft/server/level/ServerPlayer;)V",
             at = @At("TAIL"), require = 1, expect = 1, allow = 1)
-    private void simplyvanish$dismountRestoredObserver(Connection connection, ServerPlayer player, CallbackInfo callback) {
-        if (SimplyVanish.hidden(player) && SimplyVanish.observer()) {
+    private void vanishguard$dismountRestoredObserver(Connection connection, ServerPlayer player, CallbackInfo callback) {
+        if (VanishGuard.hidden(player) && VanishGuard.observer()) {
             player.stopRiding();
         }
     }

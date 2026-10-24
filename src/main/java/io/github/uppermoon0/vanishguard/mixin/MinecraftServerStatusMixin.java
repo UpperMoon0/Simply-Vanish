@@ -1,7 +1,7 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.SimplyVanish;
-import io.github.uppermoon0.simplyvanish.PublicPlayerSnapshot;
+import io.github.uppermoon0.vanishguard.VanishGuard;
+import io.github.uppermoon0.vanishguard.PublicPlayerSnapshot;
 import java.util.List;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerStatusMixin implements PublicPlayerSnapshot {
     @Unique
-    private volatile String[] simplyvanish$publicPlayerNames = new String[0];
+    private volatile String[] vanishguard$publicPlayerNames = new String[0];
 
     /**
      * Filter only the status builder, not PlayerList.getPlayers or global slot
@@ -25,9 +25,9 @@ public abstract class MinecraftServerStatusMixin implements PublicPlayerSnapshot
             method = "buildPlayerStatus()Lnet/minecraft/network/protocol/status/ServerStatus$Players;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;getPlayers()Ljava/util/List;"),
             require = 1, expect = 1, allow = 1)
-    private List<ServerPlayer> simplyvanish$publicStatusPlayers(PlayerList playerList) {
-        List<ServerPlayer> visible = SimplyVanish.visible(playerList.getPlayers());
-        this.simplyvanish$publicPlayerNames = visible.stream()
+    private List<ServerPlayer> vanishguard$publicStatusPlayers(PlayerList playerList) {
+        List<ServerPlayer> visible = VanishGuard.visible(playerList.getPlayers());
+        this.vanishguard$publicPlayerNames = visible.stream()
                 .map(player -> player.getGameProfile().getName())
                 .toArray(String[]::new);
         return visible;
@@ -35,13 +35,14 @@ public abstract class MinecraftServerStatusMixin implements PublicPlayerSnapshot
 
     @Override
     @Unique
-    public int simplyvanish$getPublicPlayerCount() {
-        return this.simplyvanish$publicPlayerNames.length;
+    public int vanishguard$getPublicPlayerCount() {
+        return this.vanishguard$publicPlayerNames.length;
     }
 
     @Override
     @Unique
-    public String[] simplyvanish$getPublicPlayerNames() {
-        return java.util.Arrays.copyOf(this.simplyvanish$publicPlayerNames, this.simplyvanish$publicPlayerNames.length);
+    public String[] vanishguard$getPublicPlayerNames() {
+        String[] snapshot = this.vanishguard$publicPlayerNames;
+        return java.util.Arrays.copyOf(snapshot, snapshot.length);
     }
 }

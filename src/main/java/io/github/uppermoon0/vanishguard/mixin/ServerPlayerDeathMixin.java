@@ -1,6 +1,6 @@
-package io.github.uppermoon0.simplyvanish.mixin;
+package io.github.uppermoon0.vanishguard.mixin;
 
-import io.github.uppermoon0.simplyvanish.SimplyVanish;
+import io.github.uppermoon0.vanishguard.VanishGuard;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -16,17 +16,17 @@ public abstract class ServerPlayerDeathMixin {
             method = "die(Lnet/minecraft/world/damagesource/DamageSource;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V"),
             require = 1, expect = 1, allow = 1)
-    private void simplyvanish$privateDeathAnnouncement(PlayerList list, Component message, boolean overlay) {
+    private void vanishguard$privateDeathAnnouncement(PlayerList list, Component message, boolean overlay) {
         list.broadcastSystemMessage(message,
-                viewer -> SimplyVanish.hidden((ServerPlayer)(Object)this) ? null : message, overlay);
+                viewer -> VanishGuard.hidden((ServerPlayer)(Object)this) ? null : message, overlay);
     }
 
     @Redirect(
             method = "die(Lnet/minecraft/world/damagesource/DamageSource;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemToTeam(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/network/chat/Component;)V"),
             require = 1, expect = 1, allow = 1)
-    private void simplyvanish$privateTeamDeathAnnouncement(PlayerList list, Player player, Component message) {
-        if (SimplyVanish.hidden(player)) {
+    private void vanishguard$privateTeamDeathAnnouncement(PlayerList list, Player player, Component message) {
+        if (VanishGuard.hidden(player)) {
             list.getServer().sendSystemMessage(message);
         } else {
             list.broadcastSystemToTeam(player, message);
@@ -37,8 +37,8 @@ public abstract class ServerPlayerDeathMixin {
             method = "die(Lnet/minecraft/world/damagesource/DamageSource;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemToAllExceptTeam(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/network/chat/Component;)V"),
             require = 1, expect = 1, allow = 1)
-    private void simplyvanish$privateOtherTeamDeathAnnouncement(PlayerList list, Player player, Component message) {
-        if (SimplyVanish.hidden(player)) {
+    private void vanishguard$privateOtherTeamDeathAnnouncement(PlayerList list, Player player, Component message) {
+        if (VanishGuard.hidden(player)) {
             list.getServer().sendSystemMessage(message);
         } else {
             list.broadcastSystemToAllExceptTeam(player, message);

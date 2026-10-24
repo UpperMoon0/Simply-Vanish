@@ -6,3 +6,4 @@ run/
 config/
 logs/
 *.log
+node_modules/

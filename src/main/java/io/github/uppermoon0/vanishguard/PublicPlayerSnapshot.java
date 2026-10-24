@@ -1,4 +1,4 @@
-package io.github.uppermoon0.simplyvanish;
+package io.github.uppermoon0.vanishguard;
 
 /**
  * A server-thread-produced view for public query handlers, which run on other
@@ -6,8 +6,8 @@ package io.github.uppermoon0.simplyvanish;
  * the GameSpy query thread.
  */
 public interface PublicPlayerSnapshot {
-    int simplyvanish$getPublicPlayerCount();
+    int vanishguard$getPublicPlayerCount();
 
     /** Returns an independent copy; callers cannot modify the published view. */
-    String[] simplyvanish$getPublicPlayerNames();
+    String[] vanishguard$getPublicPlayerNames();
 }
