@@ -42,6 +42,6 @@ public abstract class MinecraftServerStatusMixin implements PublicPlayerSnapshot
     @Override
     @Unique
     public String[] simplyvanish$getPublicPlayerNames() {
-        return this.simplyvanish$publicPlayerNames.clone();
+        return java.util.Arrays.copyOf(this.simplyvanish$publicPlayerNames, this.simplyvanish$publicPlayerNames.length);
     }
 }
